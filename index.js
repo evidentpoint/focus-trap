@@ -217,12 +217,29 @@ function focusTrap(element, userOptions) {
       if (e.target === firstTabbableNode || tabbableNodes.indexOf(e.target) === -1) {
         return tryFocus(lastTabbableNode);
       }
-      return tryFocus(tabbableNodes[currentFocusIndex - 1]);
+      return tryFocus(nextTabbableNode(currentFocusIndex, -1));
     }
 
     if (e.target === lastTabbableNode) return tryFocus(firstTabbableNode);
 
-    tryFocus(tabbableNodes[currentFocusIndex + 1]);
+    tryFocus(nextTabbableNode(currentFocusIndex, 1));
+  }
+
+  function nextTabbableNode(currentFocusIndex, increment) {
+    var currNode = tabbableNodes[currentFocusIndex];
+    if (currNode.type !== 'radio') {
+      return tabbableNodes[currentFocusIndex + increment];
+    }
+
+    var nextNode;
+    for (var i = currentFocusIndex + increment; i < tabbableNodes.length; i = i + increment) {
+      nextNode = tabbableNodes[i];
+      if (nextNode.type !== 'radio') {
+        return nextNode;
+      }
+    }
+
+    return nextNode;
   }
 
   function updateTabbableNodes() {
