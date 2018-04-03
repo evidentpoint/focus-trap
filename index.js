@@ -22,6 +22,9 @@ function focusTrap(element, userOptions) {
   config.escapeDeactivates = (userOptions && userOptions.escapeDeactivates !== undefined)
     ? userOptions.escapeDeactivates
     : true;
+  config.ignoreClick = (userOptions && userOptions.ignoreClick !== undefined)
+    ? userOptions.ignoreClick
+    : false;
 
   var trap = {
     activate: activate,
@@ -106,10 +109,13 @@ function focusTrap(element, userOptions) {
     updateTabbableNodes();
     tryFocus(firstFocusNode());
     document.addEventListener('focus', checkFocus, true);
-    document.addEventListener('click', checkClick, true);
-    document.addEventListener('mousedown', checkPointerDown, true);
-    document.addEventListener('touchstart', checkPointerDown, true);
     document.addEventListener('keydown', checkKey, true);
+
+    if (!config.ignoreClick) {
+      document.addEventListener('click', checkClick, true);
+      document.addEventListener('mousedown', checkPointerDown, true);
+      document.addEventListener('touchstart', checkPointerDown, true);
+    }
 
     return trap;
   }
@@ -118,10 +124,13 @@ function focusTrap(element, userOptions) {
     if (!active || listeningFocusTrap !== trap) return;
 
     document.removeEventListener('focus', checkFocus, true);
-    document.removeEventListener('click', checkClick, true);
-    document.removeEventListener('mousedown', checkPointerDown, true);
-    document.removeEventListener('touchstart', checkPointerDown, true);
     document.removeEventListener('keydown', checkKey, true);
+
+    if (!config.ignoreClick) {
+      document.removeEventListener('click', checkClick, true);
+      document.removeEventListener('mousedown', checkPointerDown, true);
+      document.removeEventListener('touchstart', checkPointerDown, true);
+    }
 
     listeningFocusTrap = null;
 
