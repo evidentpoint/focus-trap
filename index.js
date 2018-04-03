@@ -162,7 +162,7 @@ function focusTrap(element, userOptions) {
     var node;
     if (getNodeForOption('initialFocus') !== null) {
       node = getNodeForOption('initialFocus');
-    } else if (container.contains(document.activeElement)) {
+    } else if (shouldUseActiveElement()) {
       node = document.activeElement;
     } else {
       node = tabbableNodes[0] || getNodeForOption('fallbackFocus');
@@ -173,6 +173,19 @@ function focusTrap(element, userOptions) {
     }
 
     return node;
+  }
+
+  function shouldUseActiveElement() {
+    var activeNode = document.activeElement;
+    if (!container.contains(activeNode)) {
+      return false;
+    }
+
+    if (tabbableNodes.indexOf(activeNode) < 0) {
+      return false;
+    }
+
+    return true;
   }
 
   // This needs to be done on mousedown and touchstart instead of click
