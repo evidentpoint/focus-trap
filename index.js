@@ -25,6 +25,9 @@ function focusTrap(element, userOptions) {
   config.ignoreClick = (userOptions && userOptions.ignoreClick !== undefined)
     ? userOptions.ignoreClick
     : false;
+  config.extraTabbaleNodes = (userOptions && userOptions.extraTabbaleNodes !== undefined)
+    ? userOptions.extraTabbaleNodes
+    : [];
 
   var trap = {
     activate: activate,
@@ -162,7 +165,7 @@ function focusTrap(element, userOptions) {
     var node;
     if (getNodeForOption('initialFocus') !== null) {
       node = getNodeForOption('initialFocus');
-    } else if (shouldUseActiveElement()) {
+    } else if (isNodeInScope(document.activeElement)) {
       node = document.activeElement;
     } else {
       node = tabbableNodes[0] || getNodeForOption('fallbackFocus');
@@ -175,17 +178,8 @@ function focusTrap(element, userOptions) {
     return node;
   }
 
-  function shouldUseActiveElement() {
-    var activeNode = document.activeElement;
-    if (!container.contains(activeNode)) {
-      return false;
-    }
-
-    if (tabbableNodes.indexOf(activeNode) < 0) {
-      return false;
-    }
-
-    return true;
+  function isNodeInScope(node) {
+    return tabbableNodes.indexOf(node) >= 0;
   }
 
   // This needs to be done on mousedown and touchstart instead of click
@@ -204,7 +198,7 @@ function focusTrap(element, userOptions) {
   }
 
   function checkFocus(e) {
-    if (container.contains(e.target)) return;
+    if (isNodeInScope(e.target)) return;
     e.preventDefault();
     e.stopImmediatePropagation();
     // Checking for a blur method here resolves a Firefox issue (#15)
@@ -265,7 +259,7 @@ function focusTrap(element, userOptions) {
   }
 
   function updateTabbableNodes() {
-    tabbableNodes = tabbable(container);
+    tabbableNodes = tabbable(container).concat(config.extraTabbaleNodes);
     firstTabbableNode = tabbableNodes[0];
     lastTabbableNode = tabbableNodes[tabbableNodes.length - 1];
   }
