@@ -10,6 +10,7 @@ function focusTrap(element, userOptions) {
   var active = false;
   var paused = false;
   var tabEvent = null;
+  var hadEmptyTabbableNodes = true;
 
   var container = (typeof element === 'string')
     ? document.querySelector(element)
@@ -165,7 +166,7 @@ function focusTrap(element, userOptions) {
     var node;
     if (getNodeForOption('initialFocus') !== null) {
       node = getNodeForOption('initialFocus');
-    } else if (isNodeInScope(document.activeElement)) {
+    } else if (!hadEmptyTabbableNodes && isNodeInScope(document.activeElement)) {
       node = document.activeElement;
     } else {
       node = tabbableNodes[0] || getNodeForOption('fallbackFocus');
@@ -259,6 +260,7 @@ function focusTrap(element, userOptions) {
   }
 
   function updateTabbableNodes() {
+    hadEmptyTabbableNodes = (tabbableNodes.length - config.extraTabbaleNodes.length) <= 0;
     tabbableNodes = tabbable(container).concat(config.extraTabbaleNodes);
     firstTabbableNode = tabbableNodes[0];
     lastTabbableNode = tabbableNodes[tabbableNodes.length - 1];
