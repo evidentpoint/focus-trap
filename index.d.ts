@@ -60,6 +60,12 @@ declare module "focus-trap" {
      * related events.
      */
     ignoreClick?: boolean;
+
+    /**
+     * Default: `[]`. Addtional nodes that should be included outside
+     * modal
+     */
+    extraTabbaleNodes?: HTMLElement[];
   }
 
   type ActivateOptions = Pick<Options, "onActivate">;
