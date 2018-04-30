@@ -78,7 +78,7 @@ declare module "focus-trap" {
     activate(activateOptions?: ActivateOptions): void;
     deactivate(deactivateOptions?: DeactivateOptions): void;
     pause(): void;
-    unpause(): void;
+    unpause(elementToFocus?: HTMLElement): void;
   }
 
   /**
