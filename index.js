@@ -95,13 +95,13 @@ function focusTrap(element, userOptions) {
     removeListeners();
   }
 
-  function unpause() {
+  function unpause(nodeToFocus) {
     if (!paused || !active) return;
     paused = false;
-    addListeners();
+    addListeners(nodeToFocus);
   }
 
-  function addListeners() {
+  function addListeners(nodeToFocus) {
     if (!active) return;
 
     // There can be only one listening focus trap at a time
@@ -111,7 +111,11 @@ function focusTrap(element, userOptions) {
     listeningFocusTrap = trap;
 
     updateTabbableNodes();
-    tryFocus(firstFocusNode());
+    if (nodeToFocus) {
+    	tryFocus(nodeToFocus);
+    } else {
+    	tryFocus(firstFocusNode());
+    }
     document.addEventListener('focus', checkFocus, true);
     document.addEventListener('keydown', checkKey, true);
 
