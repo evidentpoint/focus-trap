@@ -70,6 +70,9 @@ function focusTrap(element, userOptions) {
       onDeactivate: (deactivateOptions && deactivateOptions.onDeactivate !== undefined)
         ? deactivateOptions.onDeactivate
         : config.onDeactivate,
+      customizeFocusReturn: (deactivateOptions && deactivateOptions.customizeFocusReturn !== undefined)
+        ? deactivateOptions.customizeFocusReturn
+        : undefined
     };
 
     removeListeners();
