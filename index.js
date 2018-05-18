@@ -79,9 +79,15 @@ function focusTrap(element, userOptions) {
     }
 
     if (defaultedDeactivateOptions.returnFocus) {
-      setTimeout(function () {
-        tryFocus(nodeFocusedBeforeActivation);
-      }, 0);
+      if (defaultedDeactivateOptions.customizeFocusReturn) {
+          setTimeout(function () {
+              tryFocus(defaultedDeactivateOptions.customizeFocusReturn);
+          }, 0);
+      } else {
+          setTimeout(function () {
+              tryFocus(nodeFocusedBeforeActivation);
+          }, 0);
+      }
     }
 
     active = false;

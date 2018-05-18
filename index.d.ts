@@ -72,6 +72,12 @@ declare module "focus-trap" {
 
   interface DeactivateOptions extends Pick<Options, "onDeactivate"> {
     returnFocus?: boolean;
+    
+    /**
+     * Default: `null`. Customized focus node that should be focused after
+     * closing modal
+     */
+    customizeFocusReturn?: HTMLElement;
   }
 
   export interface FocusTrap {
