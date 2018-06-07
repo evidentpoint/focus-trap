@@ -258,7 +258,7 @@ function focusTrap(element, userOptions) {
   function nextTabbableNode(currentFocusIndex, increment) {
     var currNode = tabbableNodes[currentFocusIndex];
     if (currNode.type !== 'radio') {
-      return tabbableNodes[currentFocusIndex + increment];
+      return tabbaleNodeWithRadioAdjustment(currentFocusIndex + increment, increment);
     }
 
     var nextNode;
@@ -270,6 +270,25 @@ function focusTrap(element, userOptions) {
     }
 
     return nextNode;
+  }
+
+  // to adjust next focused node so that the selected radio element
+  // will be focused if next one is radio button group
+  function tabbaleNodeWithRadioAdjustment(index, increment) {
+    var node = tabbableNodes[index];
+    if (node.type !== 'radio') {
+      return node;
+    }
+
+    var nextNode;
+    for (var i = index + increment; i < tabbableNodes.length; i = i + increment) {
+      nextNode = tabbableNodes[i];
+      if (nextNode.type === 'radio' && nextNode.checked) {
+        return nextNode;
+      }
+    }
+
+    return node;
   }
 
   function updateTabbableNodes() {
