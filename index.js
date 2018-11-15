@@ -281,7 +281,7 @@ function focusTrap(element, userOptions) {
     }
 
     var nextNode;
-    for (var i = index + increment; i < tabbableNodes.length; i = i + increment) {
+    for (var i = index; i < tabbableNodes.length; i = i + increment) {
       nextNode = tabbableNodes[i];
       if (nextNode.type === 'radio' && nextNode.checked) {
         return nextNode;
